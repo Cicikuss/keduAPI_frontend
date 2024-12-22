@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "proxy": "https://keduapi-1002036435905.europe-west3.run.app",
+  "homepage": "https://cicikuss.github.io/keduAPI_frontend/",
   "dependencies": {
     "-": "^0.0.1",
     "@testing-library/jest-dom": "^5.17.0",
