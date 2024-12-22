@@ -15,7 +15,7 @@ function App() {
       files:FileList;
     }
     setFile(target.files[0]);
-    const file = new FileReader;
+    const file = new FileReader();
     file.onload= ()=> {
       setPreview(file.result);
     }
