@@ -1,5 +1,4 @@
-import React, { ChangeEvent, useRef, useState } from 'react';
-import logo from './logo.svg';
+import React, { useRef, useState } from 'react';
 import './App.css';
 import PopUp from './Components/PopUp/PopUp';
 
@@ -9,7 +8,7 @@ function App() {
   const [preview ,setPreview]=useState<string|ArrayBuffer|null>(null);
   const [isOpen, setisOpen] = useState<boolean>(false); 
 
-  
+  let a;
 
   function handleOnChange(e:React.FormEvent<HTMLInputElement>){
     const target=e.target as HTMLInputElement & {

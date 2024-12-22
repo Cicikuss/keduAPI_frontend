@@ -1,10 +1,8 @@
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import './PopUp.css';
 import { getCatBreed, getRandomImage, getToken, uploadImage } from '../../Service/KeduService';
 import heic2any from 'heic2any';
-import * as piexif from 'piexifjs';
 import { addCatData, dataURLtoBlob, processImage } from '../../Service/ImageProcess';
-
 
 interface EditProp {
   isOpen: boolean;
