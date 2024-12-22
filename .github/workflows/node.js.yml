@@ -5,6 +5,11 @@ on:
     branches:
       - main # name of the branch you are pushing to
 
+
+env:
+  REACT_APP_CLIENT_ID: ${{secrets.REACT_APP_CLIENT_ID}}
+  REACT_APP_CLIENT_SECRET: ${{secrets.REACT_APP_CLIENT_SECRET}}
+
 jobs:
   build:
     runs-on: ubuntu-latest
