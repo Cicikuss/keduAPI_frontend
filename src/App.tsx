@@ -1,24 +1,43 @@
-import React from 'react';
+import React, { ChangeEvent, useRef, useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import PopUp from './Components/PopUp/PopUp';
 
 function App() {
+  const [file,setFile]=useState<File|undefined>();
+  const fileInput = useRef<HTMLInputElement>(null);
+  const [preview ,setPreview]=useState<string|ArrayBuffer|null>(null);
+  const [isOpen, setisOpen] = useState<boolean>(false); 
+
+  
+
+  function handleOnChange(e:React.FormEvent<HTMLInputElement>){
+    const target=e.target as HTMLInputElement & {
+      files:FileList;
+    }
+    setFile(target.files[0]);
+    const file = new FileReader;
+    file.onload= function(){
+      setPreview(file.result);
+    }
+    file.readAsDataURL(target.files[0]);
+    setisOpen(true);
+  }
+
+ 
+
+  
+
+ 
+  
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1> KEDU AI IMAGE UPLOAD SERVICE</h1>
+     
+      <div className='file-upload' onClick={()=>fileInput.current?.click()} > + <input className='upload' type="file" name='image' placeholder='Image' onChange={handleOnChange} ref={fileInput} accept='image/*' /></div>
+    <PopUp isOpen={isOpen} onClose={() => setisOpen(false)} image={preview} file={file} ></PopUp>
+   
+    
     </div>
   );
 }
