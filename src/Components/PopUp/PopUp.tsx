@@ -74,7 +74,7 @@ const PopUp: React.FC<EditProp> = ({ isOpen, onClose, image, file }) => {
       form.delete('data');
       const outputFile2 = addCatData(outputFile!,response.labelName);
       
-      form.append('file_input',new File([dataURLtoBlob(outputFile2!)],`Kedu ${new Date().getTime(                                                                                                                                                                                                                                                                                                                                                                                                                                  )}.jpg`));
+      form.append('file_input',new File([dataURLtoBlob(outputFile2!)],`Kedu${new Date().getTime(                                                                                                                                                                                                                                                                                                                                                                                                                                  )}.jpg`));
       uploadImage(form);
 
 
