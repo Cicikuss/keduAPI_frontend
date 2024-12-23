@@ -3,6 +3,7 @@ import { Token } from "../Models/Token";
 import { CatBreed } from "../Models/CatBreed";
 import { UploadResponse } from "../Models/UploadResponse";
 
+const api_url=process.env.REACT_APP_API_URL;
 
 export const getToken=  async ():Promise<Token> =>{
     const client_id=process.env.REACT_APP_CLIENT_ID;
@@ -20,13 +21,13 @@ export const getCatBreed = async (token:Token,form:FormData):Promise<CatBreed>=>
 }
 
 export const uploadImage= async(form:FormData):Promise<UploadResponse> =>{
-    return await axios.post<UploadResponse>("/upload",form, {
+    return await axios.post<UploadResponse>(api_url+"/upload",form, {
         headers: {
           'Content-Type': 'multipart/form-data',
         }}).then(response=>response.data);
 }
 
 export const getRandomImage = async()=>{
-    axios.get( "/random-image").then(response=>console.log(response.data));
+    axios.get( api_url+"/random-image").then(response=>console.log(response.data));
 }
 
