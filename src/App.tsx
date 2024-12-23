@@ -31,7 +31,7 @@ function App() {
   
   return (
     <div className="App">
-      <h1> KEDU AI IMAGE UPLOAD SERVICE</h1>
+      <h1> KEDU API IMAGE UPLOAD SERVICE</h1>
      
       <div className='file-upload' onClick={()=>fileInput.current?.click()} > + <input className='upload' type="file" name='image' placeholder='Image' onChange={handleOnChange} ref={fileInput} accept='image/*' /></div>
     <PopUp isOpen={isOpen} onClose={() => setisOpen(false)} image={preview} file={file} ></PopUp>

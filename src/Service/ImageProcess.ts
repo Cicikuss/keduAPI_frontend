@@ -24,7 +24,8 @@ export  const processImage = (imageData: string,author:string) => {
  export const addMetadata = (imageData: string,author:string) => {
     try {
       const exifObj = piexif.load(imageData);
-      exifObj['0th'][piexif.ImageIFD.Artist] = author || 'Unknown Author';
+      const utf8Author = new TextEncoder().encode(author || "Unknown Author");
+      exifObj['0th'][piexif.ImageIFD.Artist] = utf8Author;
       const exifBytes = piexif.dump(exifObj);
       const newImageData = piexif.insert(exifBytes, imageData);
       return newImageData
