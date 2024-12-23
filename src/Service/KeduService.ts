@@ -24,11 +24,10 @@ export const uploadImage= async(form:FormData):Promise<UploadResponse> =>{
     return await axios.post<UploadResponse>(api_url+"/upload",form, {
         headers: {
           'Content-Type': 'multipart/form-data',
-            withCredentials: true
         }}).then(response=>response.data);
 }
 
 export const getRandomImage = async()=>{
-    axios.get( api_url+"/random-image",{withCredentials: true}).then(response=>console.log(response.data));
+    axios.get( api_url+"/random-image").then(response=>console.log(response.data));
 }
 
