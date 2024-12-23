@@ -2,7 +2,6 @@
   "name": "kedu-image",
   "version": "0.1.0",
   "private": true,
-  "proxy": "https://keduapi-1002036435905.europe-west3.run.app",
   "homepage": "https://kedu-api-frontend.vercel.app/",
   "dependencies": {
     "-": "^0.0.1",
