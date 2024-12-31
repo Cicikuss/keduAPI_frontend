@@ -3,6 +3,8 @@ import './PopUp.css';
 import { getCatBreed, getToken, uploadImage } from '../../Service/KeduService';
 import heic2any from 'heic2any';
 import { addCatData, dataURLtoBlob, processImage } from '../../Service/ImageProcess';
+import catImage from '../../Assets/maxwell-maxwell-spin.gif'
+import { toast } from 'react-toastify';
 
 interface EditProp {
   isOpen: boolean;
@@ -22,7 +24,7 @@ const PopUp: React.FC<EditProp> = ({ isOpen, onClose, image, file }) => {
       <>
         <div className="popup-overlay" onClick={onClose} />
         <div className="popup-inner">
-          <p>Processing...</p>
+          <img src={catImage} alt="" />
         </div>
       </>
     );
@@ -39,7 +41,6 @@ const PopUp: React.FC<EditProp> = ({ isOpen, onClose, image, file }) => {
       alert("No file selected");
       return;
     }
-
     setLoading(true);
 
     try {
@@ -75,15 +76,20 @@ const PopUp: React.FC<EditProp> = ({ isOpen, onClose, image, file }) => {
       const outputFile2 = addCatData(outputFile!,response.labelName);
       
       form.append('file_input',new File([dataURLtoBlob(outputFile2!)],`Kedu${new Date().getTime()}.jpg`));
-      uploadImage(form);
-
-
+     const uploadResponse= await uploadImage(form);
+     toast.success(uploadResponse.message,{position:"top-right",autoClose:5000});
+      
       
 
     } catch (error) {
       console.error("Error processing file:", error);
+      toast.warn(error as string,{position:"top-right",autoClose:50000})
     } finally {
       setLoading(false);
+      onClose();
+      
+      
+            
     }
   };
 

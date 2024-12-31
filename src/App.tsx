@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import './App.css';
 import PopUp from './Components/PopUp/PopUp';
+import { ToastContainer } from 'react-toastify';
 
 function App() {
   const [file,setFile]=useState<File|undefined>();
@@ -35,6 +36,7 @@ function App() {
      
       <div className='file-upload' onClick={()=>fileInput.current?.click()} > + <input className='upload' type="file" name='image' placeholder='Image' onChange={handleOnChange} ref={fileInput} accept='image/*' /></div>
     <PopUp isOpen={isOpen} onClose={() => setisOpen(false)} image={preview} file={file} ></PopUp>
+    <ToastContainer/>
    
     
     </div>
