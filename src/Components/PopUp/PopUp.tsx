@@ -76,8 +76,14 @@ const PopUp: React.FC<EditProp> = ({ isOpen, onClose, image, file }) => {
       const outputFile2 = addCatData(outputFile!,response.labelName);
       
       form.append('file_input',new File([dataURLtoBlob(outputFile2!)],`Kedu${new Date().getTime()}.jpg`));
-     const uploadResponse= await uploadImage(form);
-     toast.success(uploadResponse.message,{position:"top-right",autoClose:5000});
+      if(response.labelName ==='Not Cat'){
+        toast.warn("This is not cat",{position:"top-right",autoClose:5000});
+      }
+      else{
+        const uploadResponse= await uploadImage(form);
+        toast.success(uploadResponse.message,{position:"top-right",autoClose:5000});
+      }
+   
       
       
 
@@ -87,8 +93,6 @@ const PopUp: React.FC<EditProp> = ({ isOpen, onClose, image, file }) => {
     } finally {
       setLoading(false);
       onClose();
-      
-      
             
     }
   };

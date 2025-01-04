@@ -29,5 +29,6 @@ export const uploadImage= async(form:FormData):Promise<UploadResponse> =>{
 
 export const getRandomImage = async()=>{
     axios.get( api_url+"/random-image").then(response=>console.log(response.data));
+
 }
 

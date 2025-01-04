@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import './App.css';
 import PopUp from './Components/PopUp/PopUp';
-import { ToastContainer } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 
 function App() {
   const [file,setFile]=useState<File|undefined>();
@@ -11,18 +11,24 @@ function App() {
 
  
 
-  function handleOnChange(e:React.FormEvent<HTMLInputElement>){
-    const target=e.target as HTMLInputElement & {
-      files:FileList;
+  function handleOnChange(e: React.FormEvent<HTMLInputElement>) {
+    const target = e.target as HTMLInputElement;
+    if (target.files && target.files[0]) {
+      const selectedFile = target.files[0];
+      setFile(selectedFile);
+  
+      const fileReader = new FileReader();
+      fileReader.onload = () => {
+        setPreview(fileReader.result);
+      };
+      fileReader.readAsDataURL(selectedFile);
+      setisOpen(true);
+    } else {
+      toast.warn("Image is not selected",{autoClose:5000,position:"top-right"});
+      
     }
-    setFile(target.files[0]);
-    const file = new FileReader();
-    file.onload= ()=> {
-      setPreview(file.result);
-    }
-    file.readAsDataURL(target.files[0]);
-    setisOpen(true);
   }
+  
 
  
 
