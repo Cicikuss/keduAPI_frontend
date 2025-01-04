@@ -61,7 +61,7 @@ const PopUp: React.FC<EditProp> = ({ isOpen, onClose, image, file }) => {
       } else if (file.type === 'image/jpeg' || file.type === 'image/jpg') {
         reader.readAsDataURL(file);
       } else {
-        alert('Unsupported file type');
+        toast.warn("Not supported file type",{position:"top-right"});
         setLoading(false);
       }
       const token = await getToken();
@@ -101,7 +101,7 @@ const PopUp: React.FC<EditProp> = ({ isOpen, onClose, image, file }) => {
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
     if (!ctx) {
-      alert("Canvas not supported");
+      toast.warn("Canvas not supported",{position:"top-right"});
       return;
     }
 
