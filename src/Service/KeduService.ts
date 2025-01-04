@@ -1,7 +1,6 @@
 import axios from "axios";
-import { Token } from "../Models/Token";
-import { CatBreed } from "../Models/CatBreed";
-import { UploadResponse } from "../Models/UploadResponse";
+import { allCats, CatBreed, randomCat, Token, UploadResponse } from "../Models/ResponseModels";
+
 
 const api_url=process.env.REACT_APP_API_URL;
 
@@ -27,8 +26,12 @@ export const uploadImage= async(form:FormData):Promise<UploadResponse> =>{
         }}).then(response=>response.data);
 }
 
-export const getRandomImage = async()=>{
-    axios.get( api_url+"/random-image").then(response=>console.log(response.data));
+export const getRandomImage = async():Promise<randomCat>=>{
+   return await axios.get<randomCat>( api_url+"/random-image").then(response=>response.data);
 
+}
+
+export const getAllImages = async():Promise<allCats> =>{
+    return await axios.get<allCats>(api_url+"/list-images").then(response =>response.data);
 }
 
