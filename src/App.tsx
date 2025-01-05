@@ -108,11 +108,18 @@ function App() {
 
     return () => cancelAnimationFrame(animationFrameId);
   }, [speed]);
-
+  const handleToken = (token: string) => {
+    console.log("Turnstile Token:", token);
+    
+  };
   return (
     <div className="App">
-      <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
-
+       <Turnstile
+        siteKey={process.env.REACT_APP_SITE_KEY || ""}
+        theme="light"
+        onSuccess={handleToken}
+      />
+      
       <div className="dvd-container">
         {image && (
           <img
