@@ -79,9 +79,9 @@ function App() {
     return () => cancelAnimationFrame(animationFrameId);
   }, [speed]);
   const handleToken = async (token: string) => {
-    console.log("Turnstile Token:", token);
+    
    const response = await tokenIsValid(token);
-   console.log(response.message);
+   console.log(response);
     if (response.message === "Captcha validation failed") {
       setAntiZohan(false);
       toast.error("Token is invalid", { autoClose: 5000 });
