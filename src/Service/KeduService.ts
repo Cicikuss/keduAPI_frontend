@@ -1,5 +1,5 @@
 import axios from "axios";
-import { allCats, CatBreed, randomCat, Token, UploadResponse } from "../Models/ResponseModels";
+import { allCats, CatBreed, randomCat, Token, UploadResponse, validateToken } from "../Models/ResponseModels";
 
 
 const api_url=process.env.REACT_APP_API_URL;
@@ -34,4 +34,8 @@ export const getRandomImage = async():Promise<randomCat>=>{
 export const getAllImages = async():Promise<allCats> =>{
     return await axios.get<allCats>(api_url+"/list-images").then(response =>response.data);
 }
+
+export const tokenIsValid = async(token:string):Promise<validateToken> =>{
+    return await axios.post<validateToken>(api_url+"/verify-captcha",token).then(response=>response.data);
+} 
 

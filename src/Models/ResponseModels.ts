@@ -23,3 +23,7 @@ export  type randomCat = {
         updated:string
     }
 }
+
+export type validateToken ={
+    message:string
+}

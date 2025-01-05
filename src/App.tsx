@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import "./App.css";
 import PopUp from "./Components/PopUp/PopUp";
 import { toast, ToastContainer } from "react-toastify";
-import { getRandomImage } from "./Service/KeduService";
+import { getRandomImage, tokenIsValid } from "./Service/KeduService";
 import Turnstile from "./Components/Turnstile/Turnstile";
 
 function App() {
@@ -11,42 +11,12 @@ function App() {
   const [preview, setPreview] = useState<string | ArrayBuffer | null>(null);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [image, setImage] = useState<string | null>("https://media.tenor.com/k_UsDt9xfWIAAAAM/i-will-eat-you-cat.gif"); // Default image
-  const [token, setToken] = useState<string | null>(null);
-
+  const [antiZohan,setAntiZohan] =useState<boolean>(false);
   const dvdRef = useRef<HTMLImageElement>(null);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [speed, setSpeed] = useState({ x: 1, y: 1 });
 
-  const handleVerify = (token: string) => {
-    setToken(token);
-  };
-
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
-
-    if (!token) {
-      alert("Lütfen CAPTCHA doğrulamasını tamamlayın.");
-      return;
-    }
-
-    try {
-      const response = await fetch("/api/verify-turnstile", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ token }),
-      });
-
-      const result = await response.json();
-      if (result.success) {
-        alert("Doğrulama başarılı!");
-      } else {
-        alert("Doğrulama başarısız!");
-      }
-    } catch (error) {
-      console.error("Turnstile doğrulama hatası:", error);
-      alert("Doğrulama sırasında bir hata oluştu.");
-    }
-  };
+  
 
   const handleOnChange = (e: React.FormEvent<HTMLInputElement>) => {
     const target = e.target as HTMLInputElement;
@@ -108,17 +78,29 @@ function App() {
 
     return () => cancelAnimationFrame(animationFrameId);
   }, [speed]);
-  const handleToken = (token: string) => {
+  const handleToken = async (token: string) => {
     console.log("Turnstile Token:", token);
+   const response = await tokenIsValid(token);
+    if (response.message === "Captcha validation failed") {
+      setAntiZohan(false);
+      toast.error("Token is invalid", { autoClose: 5000 });
+      
+    } else {
+      setAntiZohan(true);
+      toast.success("Token is valid", { autoClose: 5000 });
+    }
     
   };
+  if(!antiZohan){
+    return(<Turnstile
+      siteKey={process.env.REACT_APP_SITE_KEY || ""}
+      theme="light"
+      onSuccess={handleToken}
+    />)
+  } 
   return (
     <div className="App">
-       <Turnstile
-        siteKey={process.env.REACT_APP_SITE_KEY || ""}
-        theme="light"
-        onSuccess={handleToken}
-      />
+       
       
       <div className="dvd-container">
         {image && (
