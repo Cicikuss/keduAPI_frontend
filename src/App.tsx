@@ -3,6 +3,9 @@ import './App.css';
 import PopUp from './Components/PopUp/PopUp';
 import { toast, ToastContainer } from 'react-toastify';
 import { getRandomImage } from './Service/KeduService';
+import Turnstile, { useTurnstile } from "react-turnstile";
+
+
 
 function App() {
   const [file, setFile] = useState<File | undefined>();
@@ -10,7 +13,7 @@ function App() {
   const [preview, setPreview] = useState<string | ArrayBuffer | null>(null);
   const [isOpen, setisOpen] = useState<boolean>(false);
   const [image, setImage] = useState<string | null>('https://media.tenor.com/k_UsDt9xfWIAAAAM/i-will-eat-you-cat.gif'); // Default image
-
+  const turnstile = useTurnstile();
   
   const dvdRef = useRef<HTMLImageElement>(null);
   const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -24,6 +27,8 @@ function App() {
       toast.error("Failed to load image", { autoClose: 5000 });
     }
   }
+
+ 
 
   function handleOnChange(e: React.FormEvent<HTMLInputElement>) {
     const target = e.target as HTMLInputElement;
@@ -86,10 +91,20 @@ function App() {
   
 
   
-
+ 
   return (
     <div className="App">
-  
+      <Turnstile
+      sitekey={process.env.REACT_APP_SITE_KEY!}
+      onVerify={(token) => {
+        fetch("/login", {
+          method: "POST",
+          body: JSON.stringify({ token }),
+        }).then((response) => {
+          if (!response.ok) turnstile.reset();
+        });
+      }}
+    />
       <div className="dvd-container">
        {image && <img
           id="dvd-image"
