@@ -36,6 +36,6 @@ export const getAllImages = async():Promise<allCats> =>{
 }
 
 export const tokenIsValid = async(token:string):Promise<validateToken> =>{
-    return await axios.post<validateToken>(api_url+"/verify-captcha",token).then(response=>response.data);
+    return await axios.post<validateToken>(api_url+"/verify-captcha",{"token":token}).then(response=>response.data);
 } 
 
