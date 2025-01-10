@@ -81,6 +81,9 @@ const PopUp: React.FC<EditProp> = ({ isOpen, onClose, image, file }) => {
       if(response.labelName ==='Not Cat'){
         toast.warn("This is not cat",{position:"top-right",autoClose:5000});
       }
+      else if(!antiZohan){
+        toast.error("Token is invalid", { autoClose: 5000 });
+      }
       else{
         const uploadResponse= await uploadImage(form);
         toast.success(uploadResponse.message,{position:"top-right",autoClose:5000});
@@ -123,14 +126,13 @@ const PopUp: React.FC<EditProp> = ({ isOpen, onClose, image, file }) => {
   const handleToken = async (token: string) => {
     
     const response = await tokenIsValid(token);
-    console.log(response);
+    
      if (response.message === "Captcha validation failed") {
        setAntiZohan(false);
-       toast.error("Token is invalid", { autoClose: 5000 });
+       
        
      } else {
        setAntiZohan(true);
-       toast.success("Token is valid", { autoClose: 5000 });
      }
      
    };
