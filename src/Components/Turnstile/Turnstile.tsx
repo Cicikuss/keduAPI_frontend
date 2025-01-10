@@ -4,6 +4,7 @@ interface TurnstileProps {
   siteKey: string;
   theme?: "light" | "dark";
   onSuccess?: (token: string) => void;
+ 
 }
 
 const Turnstile: React.FC<TurnstileProps> = ({ siteKey, theme = "light", onSuccess }) => {

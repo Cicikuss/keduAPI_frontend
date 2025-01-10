@@ -11,7 +11,6 @@ function App() {
   const [preview, setPreview] = useState<string | ArrayBuffer | null>(null);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [image, setImage] = useState<string | null>("https://media.tenor.com/k_UsDt9xfWIAAAAM/i-will-eat-you-cat.gif"); // Default image
-  const [antiZohan,setAntiZohan] =useState<boolean>(false);
   const dvdRef = useRef<HTMLImageElement>(null);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [speed, setSpeed] = useState({ x: 1, y: 1 });
@@ -78,27 +77,8 @@ function App() {
 
     return () => cancelAnimationFrame(animationFrameId);
   }, [speed]);
-  const handleToken = async (token: string) => {
-    
-   const response = await tokenIsValid(token);
-   console.log(response);
-    if (response.message === "Captcha validation failed") {
-      setAntiZohan(false);
-      toast.error("Token is invalid", { autoClose: 5000 });
-      
-    } else {
-      setAntiZohan(true);
-      toast.success("Token is valid", { autoClose: 5000 });
-    }
-    
-  };
-  if(!antiZohan){
-    return(<Turnstile
-      siteKey={process.env.REACT_APP_SITE_KEY || ""}
-      theme="light"
-      onSuccess={handleToken}
-    />)
-  } 
+  
+ 
   return (
     <div className="App">
        

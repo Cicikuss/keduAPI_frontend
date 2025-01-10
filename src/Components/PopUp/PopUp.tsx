@@ -1,10 +1,11 @@
 import React, { ChangeEvent, useState } from 'react';
 import './PopUp.css';
-import { getCatBreed, getToken, uploadImage } from '../../Service/KeduService';
+import { getCatBreed, getToken, tokenIsValid, uploadImage } from '../../Service/KeduService';
 import heic2any from 'heic2any';
 import { addCatData, dataURLtoBlob, processImage } from '../../Service/ImageProcess';
 import catImage from '../../Assets/maxwell-maxwell-spin.gif'
 import { toast } from 'react-toastify';
+import Turnstile from '../Turnstile/Turnstile';
 
 interface EditProp {
   isOpen: boolean;
@@ -16,6 +17,7 @@ interface EditProp {
 const PopUp: React.FC<EditProp> = ({ isOpen, onClose, image, file }) => {
   const [formData, setFormData] = useState<Record<string, any>>({});
   const [loading, setLoading] = useState<boolean>(false);
+  const [antiZohan,setAntiZohan] =useState<boolean>(false);
   
   
   if (!isOpen) return null;
@@ -118,6 +120,21 @@ const PopUp: React.FC<EditProp> = ({ isOpen, onClose, image, file }) => {
     img.src = URL.createObjectURL(file);
   };
 
+  const handleToken = async (token: string) => {
+    
+    const response = await tokenIsValid(token);
+    console.log(response);
+     if (response.message === "Captcha validation failed") {
+       setAntiZohan(false);
+       toast.error("Token is invalid", { autoClose: 5000 });
+       
+     } else {
+       setAntiZohan(true);
+       toast.success("Token is valid", { autoClose: 5000 });
+     }
+     
+   };
+
   
   return (
     <>
@@ -137,6 +154,10 @@ const PopUp: React.FC<EditProp> = ({ isOpen, onClose, image, file }) => {
             onChange={handleChange}
           />
         </form>
+        <Turnstile
+      siteKey={process.env.REACT_APP_SITE_KEY || ""}
+      theme="light"
+      onSuccess={handleToken} />
         <button type='submit' onClick={handleOnSubmit}>Submit</button>
         
        
