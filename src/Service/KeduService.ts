@@ -37,5 +37,8 @@ export const getAllImages = async():Promise<allCats> =>{
 
 export const tokenIsValid = async(token:string):Promise<validateToken> =>{
     return await axios.post<validateToken>(api_url+"/verify-captcha",{token:token}).then(response=>response.data);
+}
+export const ipFinder = async():Promise<string> =>{
+    return await axios.get("https://api64.ipify.org?format=json").then(response=>response.data);
 } 
 

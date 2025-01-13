@@ -2,8 +2,8 @@ import React, { useEffect, useRef, useState } from "react";
 import "./App.css";
 import PopUp from "./Components/PopUp/PopUp";
 import { toast, ToastContainer } from "react-toastify";
-import { getRandomImage, tokenIsValid } from "./Service/KeduService";
-import Turnstile from "./Components/Turnstile/Turnstile";
+import { getRandomImage } from "./Service/KeduService";
+
 
 function App() {
   const [file, setFile] = useState<File | undefined>();
@@ -38,6 +38,7 @@ function App() {
     try {
       const response = await getRandomImage();
       setImage(response.image_url || "https://media.tenor.com/k_UsDt9xfWIAAAAM/i-will-eat-you-cat.gif"); // Fallback image
+      
     } catch (error) {
       toast.error("Failed to load image", { autoClose: 5000 });
     }

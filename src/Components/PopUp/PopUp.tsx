@@ -145,7 +145,7 @@ const PopUp: React.FC<EditProp> = ({ isOpen, onClose, image, file }) => {
         <button className="close-button" onClick={onClose}>
           &times;
         </button>
-        <img className="image" src={image as string} alt="Popup Content" />
+        <img className="image" src={image as string} alt="Popup Content"  />
         <form>
           <input
             type="text"
