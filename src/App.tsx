@@ -82,7 +82,7 @@ function App() {
  
   return (
     <div className="App">
-       
+      <meta name="google-site-verification" content="aD3tiBOgQPB09LE8zvswe_412LPNrGFQNtHHCJG71rk" /> 
       
       <div className="dvd-container">
         {image && (
