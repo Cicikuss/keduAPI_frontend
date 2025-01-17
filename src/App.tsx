@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 import "./App.css";
 import PopUp from "./Components/PopUp/PopUp";
 import { toast, ToastContainer } from "react-toastify";
@@ -18,6 +18,7 @@ function App() {
   
 
   const handleOnChange = (e: React.FormEvent<HTMLInputElement>) => {
+    
     const target = e.target as HTMLInputElement;
     if (target.files && target.files[0]) {
       const selectedFile = target.files[0];
@@ -33,6 +34,29 @@ function App() {
       toast.warn("Image is not selected", { autoClose: 5000, position: "top-right" });
     }
   };
+  const handleDrop = (e:React.DragEvent<HTMLDivElement>)=>{
+    e.preventDefault();
+    if(e.dataTransfer.files && e.dataTransfer.files[0]){
+      const selectedFile = e.dataTransfer.files[0];
+      setFile(selectedFile);
+
+      const fileReader = new FileReader();
+      fileReader.onload = () => {
+        setPreview(fileReader.result);
+      };
+      fileReader.readAsDataURL(selectedFile);
+      setIsOpen(true);
+    }
+    else{
+      toast.warn("Image is not selected", { autoClose: 5000, position: "top-right" });
+    }
+    
+
+  }
+  const handleDragOver = (e:React.DragEvent<HTMLDivElement>)=>{
+    e.preventDefault();
+   
+  }
 
   const OnClick = async () => {
     try {
@@ -78,11 +102,15 @@ function App() {
 
     return () => cancelAnimationFrame(animationFrameId);
   }, [speed]);
+
+ 
+  
   
  
   return (
-    <div className="App">
-      
+    <div className="App"   onDragOver={handleDragOver}
+    onDrop={handleDrop}>
+     
       
       <div className="dvd-container">
         {image && (
@@ -97,9 +125,10 @@ function App() {
       </div>
       <h1>KEDU API IMAGE UPLOAD SERVICE</h1>
      
-      <div className="file-upload" onClick={() => fileInput.current?.click()}>
+      <div className="file-upload" onClick={() => fileInput.current!.click()}>
         +
         <input
+        
           className="upload"
           type="file"
           name="image"
@@ -107,6 +136,7 @@ function App() {
           onChange={handleOnChange}
           ref={fileInput}
           accept="image/*"
+         
         />
       </div>
       <PopUp isOpen={isOpen} onClose={() => setIsOpen(false)} image={preview} file={file}></PopUp>
