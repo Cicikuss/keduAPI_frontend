@@ -66,6 +66,7 @@ export  const processImage = (imageData: string,author:string) => {
 
     };
     img.src = URL.createObjectURL(file);
+   
   };
 
 

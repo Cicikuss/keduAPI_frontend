@@ -56,7 +56,7 @@ const PopUp: React.FC<EditProp> = ({ isOpen, onClose, image, file }) => {
          outputFile =  processImage(reader.result as string,formData.author);
         }
       };
-     
+      
 
       if (file.type === 'image/heic') {
         const result = (await heic2any({ blob: file, toType: 'image/jpeg' })) as Blob;
@@ -71,8 +71,9 @@ const PopUp: React.FC<EditProp> = ({ isOpen, onClose, image, file }) => {
       }
       const token = await getToken();
       const form = new FormData();
-      if(size>upplimit){
+      if(size > upplimit){
         compressImage(file,reader,quality);
+        console.log("Compressed");
       }
 
 
