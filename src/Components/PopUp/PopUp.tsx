@@ -51,27 +51,13 @@ const PopUp: React.FC<EditProp> = ({ isOpen, onClose, image, file }) => {
       let outputFile:string|undefined;
       const maxsize = 3072;
       const reader = new FileReader();
+      let file2:File;
       reader.onload = () => {
         if (reader.result) {
          outputFile =  processImage(reader.result as string,formData.author);
         }
       };
-      
 
-      if (file.type === 'image/heic') {
-        const result = (await heic2any({ blob: file, toType: 'image/jpeg' })) as Blob;
-        reader.readAsDataURL(result);
-      } else if (file.type === 'image/png') {
-        convertPNGtoJPG(file, reader);
-      } else if (file.type === 'image/jpeg' || file.type === 'image/jpg') {
-        reader.readAsDataURL(file);
-      } else {
-        toast.warn("Not supported file type",{position:"top-right"});
-        setLoading(false);
-      }
-      const token = await getToken();
-      const form = new FormData();
-      
       if(file.size/1024 > maxsize){
 
         var controller = new AbortController();
@@ -81,33 +67,37 @@ const PopUp: React.FC<EditProp> = ({ isOpen, onClose, image, file }) => {
           signal: controller.signal,
         }
         try {
-         const fili =new File([dataURLtoBlob(outputFile!)],`Kedu${new Date().getTime()}.jpg`);
-         console.log(fili.type);
-         console.log(dataURLtoBlob(outputFile!).type);
-          const compressedFile = await imageCompression(fili, options);
-          console.log('compressedFile instanceof Blob', compressedFile instanceof Blob); // true
-          console.log(`compressedFile size ${compressedFile.size / 1024 / 1024} MB`); // smaller than maxSizeMB
-          form.append('data',compressedFile,"miyav.jpg");
-          const response = await getCatBreed(token,form);
-          form.delete('data');
-          const outputFile2 = addCatData(outputFile!,response.labelName);
-          form.append('file_input',new File([dataURLtoBlob(outputFile2!)],`Kedu${new Date().getTime()}.jpg`));
-          if(response.labelName ==='Not Cat'){
-            toast.warn("This is not cat",{position:"top-right",autoClose:5000});
-          }
-          else if(!antiZohan){
-            toast.error("Token is invalid", { autoClose: 5000 });
-          }
-          else{
-            const uploadResponse= await uploadImage(form);
-            toast.success(uploadResponse.message,{position:"top-right",autoClose:5000});
-          }
-        } catch (error) {
-          console.log(error);
-        }
+  
+           const compressedFile = await imageCompression(file, options);
+           file2 = compressedFile;
+
+         } catch (error) {
+           console.log(error);
+         }
 
       }
       else{
+        file2 = file;
+      }
+
+      
+
+      if (file.type === 'image/heic') {
+        const result = (await heic2any({ blob: file2!, toType: 'image/jpeg' })) as Blob;
+        reader.readAsDataURL(result);
+      } else if (file.type === 'image/png') {
+        convertPNGtoJPG(file2!, reader);
+      } else if (file.type === 'image/jpeg' || file.type === 'image/jpg') {
+        reader.readAsDataURL(file2!);
+      } else {
+        toast.warn("Not supported file type",{position:"top-right"});
+        setLoading(false);
+      }
+      const token = await getToken();
+      const form = new FormData();
+      
+      
+     
         form.append('data',dataURLtoBlob(outputFile!),"miyav.jpg");
         const response = await getCatBreed(token,form); 
         form.delete('data');
@@ -124,7 +114,7 @@ const PopUp: React.FC<EditProp> = ({ isOpen, onClose, image, file }) => {
           const uploadResponse= await uploadImage(form);
           toast.success(uploadResponse.message,{position:"top-right",autoClose:5000});
         }
-      }
+      
     
 
 
