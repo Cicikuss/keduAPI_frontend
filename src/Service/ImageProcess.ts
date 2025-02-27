@@ -16,6 +16,7 @@ export const dataURLtoBlob = (dataURL: string): Blob => {
 
 export  const processImage = (imageData: string,author:string) => {
     try {
+      
       return addMetadata(imageData,author);
     } catch (error) {
       console.error("Error processing image:", error);

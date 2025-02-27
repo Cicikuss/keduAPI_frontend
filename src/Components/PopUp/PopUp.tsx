@@ -44,12 +44,11 @@ const PopUp: React.FC<EditProp> = ({ isOpen, onClose, image, file }) => {
       return;
     }
     setLoading(true);
-    let upplimit = 3072;
-    let size = file.size / 1024;
-    let quality = upplimit / size; 
+   
 
     try {
       let outputFile:string|undefined;
+      const maxsize = 3072;
       const reader = new FileReader();
       reader.onload = () => {
         if (reader.result) {
@@ -71,10 +70,11 @@ const PopUp: React.FC<EditProp> = ({ isOpen, onClose, image, file }) => {
       }
       const token = await getToken();
       const form = new FormData();
-      if(size > upplimit){
+      
+      if(file.size/1024 > maxsize){
+        const quality = maxsize / (file.size/1024);
         compressImage(file,reader,quality);
-        console.log("Compressed");
-        console.log(dataURLtoBlob(outputFile!).size/1024);
+        
       }
 
 
