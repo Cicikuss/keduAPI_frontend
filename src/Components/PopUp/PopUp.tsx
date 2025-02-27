@@ -83,6 +83,7 @@ const PopUp: React.FC<EditProp> = ({ isOpen, onClose, image, file }) => {
         try {
          const fili =new File([dataURLtoBlob(outputFile!)],`Kedu${new Date().getTime()}.jpg`);
          console.log(fili.type);
+         console.log(outputFile);
           const compressedFile = await imageCompression(fili, options);
           console.log('compressedFile instanceof Blob', compressedFile instanceof Blob); // true
           console.log(`compressedFile size ${compressedFile.size / 1024 / 1024} MB`); // smaller than maxSizeMB
@@ -108,8 +109,6 @@ const PopUp: React.FC<EditProp> = ({ isOpen, onClose, image, file }) => {
       }
       else{
         form.append('data',dataURLtoBlob(outputFile!),"miyav.jpg");
-     
-     
         const response = await getCatBreed(token,form); 
         form.delete('data');
         const outputFile2 = addCatData(outputFile!,response.labelName);
