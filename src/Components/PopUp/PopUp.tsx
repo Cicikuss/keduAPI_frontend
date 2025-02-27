@@ -2,7 +2,7 @@ import React, { ChangeEvent, useState } from 'react';
 import './PopUp.css';
 import { getCatBreed, getToken, tokenIsValid, uploadImage } from '../../Service/KeduService';
 import heic2any from 'heic2any';
-import { addCatData, dataURLtoBlob, processImage } from '../../Service/ImageProcess';
+import { addCatData, compressImage, convertPNGtoJPG, dataURLtoBlob, processImage } from '../../Service/ImageProcess';
 import catImage from '../../Assets/maxwell-maxwell-spin.gif'
 import { toast } from 'react-toastify';
 import Turnstile from '../Turnstile/Turnstile';
@@ -44,6 +44,9 @@ const PopUp: React.FC<EditProp> = ({ isOpen, onClose, image, file }) => {
       return;
     }
     setLoading(true);
+    let upplimit = 3072;
+    let size = file.size / 1024;
+    let quality = upplimit / size; 
 
     try {
       let outputFile:string|undefined;
@@ -68,6 +71,10 @@ const PopUp: React.FC<EditProp> = ({ isOpen, onClose, image, file }) => {
       }
       const token = await getToken();
       const form = new FormData();
+      if(size>upplimit){
+        compressImage(file,reader,quality);
+      }
+
 
       
       form.append('data',dataURLtoBlob(outputFile!),"miyav.jpg");
@@ -102,26 +109,7 @@ const PopUp: React.FC<EditProp> = ({ isOpen, onClose, image, file }) => {
     }
   };
 
-  const convertPNGtoJPG = (file: File, reader: FileReader) => {
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
-    if (!ctx) {
-      toast.warn("Canvas not supported",{position:"top-right"});
-      return;
-    }
 
-    const img = new Image();
-    img.onload = () => {
-      canvas.width = img.width;
-      canvas.height = img.height;
-      ctx.drawImage(img, 0, 0);
-      const jpegUrl = canvas.toDataURL('image/jpeg', 0.8);
-    
-      reader.readAsDataURL(dataURLtoBlob(jpegUrl));
-
-    };
-    img.src = URL.createObjectURL(file);
-  };
 
   const handleToken = async (token: string) => {
     

@@ -4,6 +4,7 @@ import "./root.css";
 import PopUp from "./Components/PopUp/PopUp";
 import { toast, ToastContainer } from "react-toastify";
 import { getRandomImage } from "./Service/KeduService";
+import GithubCorner from "react-github-corner";
 
 
 function App() {
@@ -125,7 +126,8 @@ function App() {
         )}
       </div>
       <h1>KEDU API IMAGE UPLOAD SERVICE</h1>
-     
+      
+      <GithubCorner href="https://github.com/Hajorda/KeduAPI" />
       <div className="file-upload" onClick={() => fileInput.current!.click()}>
         +
         <input
