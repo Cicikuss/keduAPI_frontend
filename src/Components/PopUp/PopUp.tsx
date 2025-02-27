@@ -62,7 +62,7 @@ const PopUp: React.FC<EditProp> = ({ isOpen, onClose, image, file }) => {
 
         var controller = new AbortController();
         var options = {
-          maxsize: maxsize,
+          maxsize: 3,
           useWebWorker: true,
           signal: controller.signal,
         }
@@ -115,9 +115,6 @@ const PopUp: React.FC<EditProp> = ({ isOpen, onClose, image, file }) => {
           toast.success(uploadResponse.message,{position:"top-right",autoClose:5000});
         }
       
-    
-
-
       
   
    
