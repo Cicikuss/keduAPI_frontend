@@ -83,7 +83,7 @@ const PopUp: React.FC<EditProp> = ({ isOpen, onClose, image, file }) => {
         try {
          const fili =new File([dataURLtoBlob(outputFile!)],`Kedu${new Date().getTime()}.jpg`);
          console.log(fili.type);
-         console.log(outputFile);
+         console.log(dataURLtoBlob(outputFile!).type);
           const compressedFile = await imageCompression(fili, options);
           console.log('compressedFile instanceof Blob', compressedFile instanceof Blob); // true
           console.log(`compressedFile size ${compressedFile.size / 1024 / 1024} MB`); // smaller than maxSizeMB
