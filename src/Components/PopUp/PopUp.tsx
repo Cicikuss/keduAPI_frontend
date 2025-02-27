@@ -62,8 +62,9 @@ const PopUp: React.FC<EditProp> = ({ isOpen, onClose, image, file }) => {
 
         var controller = new AbortController();
         var options = {
-          maxsize: 3,
+          maxSizeMB: 3,
           useWebWorker: true,
+          preserveExif: true,
           signal: controller.signal,
         }
         try {
