@@ -74,6 +74,7 @@ const PopUp: React.FC<EditProp> = ({ isOpen, onClose, image, file }) => {
       if(size > upplimit){
         compressImage(file,reader,quality);
         console.log("Compressed");
+        console.log(dataURLtoBlob(outputFile!).size/1024);
       }
 
 
