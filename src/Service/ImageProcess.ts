@@ -79,18 +79,18 @@ export  const processImage = (imageData: string,author:string) => {
       toast.warn("Canvas not supported",{position:"top-right"});
       return;
     }
-
+    let outputFile:string;
     const img = new Image();
     img.onload = () => {
       canvas.width = img.width;
       canvas.height = img.height;
       ctx.drawImage(img, 0, 0);
       const jpegUrl = canvas.toDataURL('image/jpeg', quality);
-    
+      outputFile=jpegUrl;
       reader.readAsDataURL(dataURLtoBlob(jpegUrl));
 
     };
     img.src = URL.createObjectURL(file);
-    
+    return outputFile!;
 
   };
