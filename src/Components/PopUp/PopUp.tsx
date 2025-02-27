@@ -71,16 +71,7 @@ const PopUp: React.FC<EditProp> = ({ isOpen, onClose, image, file }) => {
       const token = await getToken();
       const form = new FormData();
       
-      if(file.size/1024 > maxsize){
-        const quality = maxsize / (file.size/1024);
-        reader.onload = () => {
-          if (reader.result) {
-           outputFile =  compressImage(file,reader,quality);
-          }
-        }
-        reader.readAsDataURL(dataURLtoBlob(outputFile!));
-
-      }
+    
 
 
       
