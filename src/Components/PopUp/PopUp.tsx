@@ -6,6 +6,7 @@ import { addCatData, compressImage, convertPNGtoJPG, dataURLtoBlob, processImage
 import catImage from '../../Assets/maxwell-maxwell-spin.gif'
 import { toast } from 'react-toastify';
 import Turnstile from '../Turnstile/Turnstile';
+import imageCompression from 'browser-image-compression';
 
 interface EditProp {
   isOpen: boolean;
@@ -71,28 +72,63 @@ const PopUp: React.FC<EditProp> = ({ isOpen, onClose, image, file }) => {
       const token = await getToken();
       const form = new FormData();
       
+      if(file.size/1024 > maxsize){
+
+        var controller = new AbortController();
+        var options = {
+          maxsize: maxsize,
+          useWebWorker: true,
+          signal: controller.signal,
+        }
+        try {
+          const compressedFile = await imageCompression(new File([dataURLtoBlob(outputFile!)],`Kedu${new Date().getTime()}.jpg`), options);
+          console.log('compressedFile instanceof Blob', compressedFile instanceof Blob); // true
+          console.log(`compressedFile size ${compressedFile.size / 1024 / 1024} MB`); // smaller than maxSizeMB
+          form.append('data',compressedFile,"miyav.jpg");
+          const response = await getCatBreed(token,form);
+          form.delete('data');
+          const outputFile2 = addCatData(outputFile!,response.labelName);
+          form.append('file_input',new File([dataURLtoBlob(outputFile2!)],`Kedu${new Date().getTime()}.jpg`));
+          if(response.labelName ==='Not Cat'){
+            toast.warn("This is not cat",{position:"top-right",autoClose:5000});
+          }
+          else if(!antiZohan){
+            toast.error("Token is invalid", { autoClose: 5000 });
+          }
+          else{
+            const uploadResponse= await uploadImage(form);
+            toast.success(uploadResponse.message,{position:"top-right",autoClose:5000});
+          }
+        } catch (error) {
+          console.log(error);
+        }
+
+      }
+      else{
+        form.append('data',dataURLtoBlob(outputFile!),"miyav.jpg");
+     
+     
+        const response = await getCatBreed(token,form); 
+        form.delete('data');
+        const outputFile2 = addCatData(outputFile!,response.labelName);
+        
+        form.append('file_input',new File([dataURLtoBlob(outputFile2!)],`Kedu${new Date().getTime()}.jpg`));
+        if(response.labelName ==='Not Cat'){
+          toast.warn("This is not cat",{position:"top-right",autoClose:5000});
+        }
+        else if(!antiZohan){
+          toast.error("Token is invalid", { autoClose: 5000 });
+        }
+        else{
+          const uploadResponse= await uploadImage(form);
+          toast.success(uploadResponse.message,{position:"top-right",autoClose:5000});
+        }
+      }
     
 
 
       
-      form.append('data',dataURLtoBlob(outputFile!),"miyav.jpg");
-     
-     
-      const response = await getCatBreed(token,form); 
-      form.delete('data');
-      const outputFile2 = addCatData(outputFile!,response.labelName);
-      
-      form.append('file_input',new File([dataURLtoBlob(outputFile2!)],`Kedu${new Date().getTime()}.jpg`));
-      if(response.labelName ==='Not Cat'){
-        toast.warn("This is not cat",{position:"top-right",autoClose:5000});
-      }
-      else if(!antiZohan){
-        toast.error("Token is invalid", { autoClose: 5000 });
-      }
-      else{
-        const uploadResponse= await uploadImage(form);
-        toast.success(uploadResponse.message,{position:"top-right",autoClose:5000});
-      }
+  
    
       
       
