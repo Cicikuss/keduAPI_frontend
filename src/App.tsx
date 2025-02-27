@@ -1,5 +1,6 @@
-import React, { ChangeEvent, useEffect, useRef, useState } from "react";
+import React, {  useEffect, useRef, useState } from "react";
 import "./App.css";
+import "./root.css";
 import PopUp from "./Components/PopUp/PopUp";
 import { toast, ToastContainer } from "react-toastify";
 import { getRandomImage } from "./Service/KeduService";

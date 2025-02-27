@@ -5,8 +5,8 @@
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background-color: transparent;
   gap: 20px ;
+
 }
 .wrapper {
   background: transparent;
@@ -16,6 +16,7 @@
   color: #fff;
   border-radius: 10px;
   padding: 30px 40px;
+  z-index: 1;
 }
 .file-upload {
   display: flex;
@@ -31,14 +32,17 @@
   color: #61dafb;
   cursor: pointer;
   position: relative;
+  z-index: 1;
 }
 
 .upload {
   display: none; /* Gizli input */
+  z-index: 1;
 }
 
 .file-upload:hover {
   background-color: #e6f7ff;
+  z-index: 1;
 }
 
 .contributors {
@@ -49,12 +53,14 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   padding: 20px;
   width: 300px;
+  z-index: 1;
 }
 
 .contributors p {
   margin: 0 0 20px 0;
   font-size: 16px;
   line-height: 1.5;
+  z-index: 1;
 }
 
 /* Link Stili */
@@ -63,10 +69,12 @@
   text-decoration: none;
   font-weight: bold;
   transition: color 0.3s ease;
+  z-index: 1;
 }
 
 .contributors a:hover {
   color: #0056b3;
+  z-index: 1;
 }
 
 
@@ -79,10 +87,12 @@
   font-size: 14px;
   cursor: pointer;
   transition: background 0.3s ease;
+  z-index: 1;
 }
 
 .contributors button:hover {
   background: #0056b3;
+  z-index: 1;
 }
 
 .dvd-container {
@@ -92,7 +102,7 @@
   width: 100vw;
   height: 100vh;
   overflow: hidden;
-  z-index: -1;
+  z-index: 0;
 }
 
 #dvd-image {
@@ -100,6 +110,64 @@
   width: 100px;
   height: 100px;
   border-radius: 10px;
+  z-index: 1;
+}
+
+.App::before,
+.App::after {
+  content: '';
+  position: absolute;
+  opacity:0.8
 }
 
 
+.App::before {
+  background: var(--third-glow);
+  border-radius: 50%;
+  width: 50vw;
+  height: 50vw;
+  margin-left: -200px;
+  filter:blur(90px);  
+  top: calc(50vh - 50vw/2);
+  left: calc(50vw );
+  animation: animateBefore 7s cubic-bezier(0.47, 0, 0.745, 0.715) infinite;
+  z-index: -10;
+}
+
+.App::after {
+  background: var(--secondary-glow);
+  border-radius: 50%;
+  width: 500px;
+  height: 700px;
+  filter:blur(90px);
+  top: calc(50vh - 50vw/2);
+  left: calc(50vw - 50vw/2);
+  animation: animateAfter 7s cubic-bezier(0.47, 0, 0.745, 0.715) infinite;
+ 
+}
+
+@keyframes animateBefore {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(200px) scale(0.8);
+
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes animateAfter{
+  0% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(-250px) scale(1.2);
+
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
